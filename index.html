@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contrax — Know if a contractor's quote is fair, before you sign</title>
+<meta name="description" content="Snap a photo of any contractor quote. Contrax checks it against local permit records, license boards, and real prices near you — then writes your counter-offer.">
+<meta property="og:title" content="Contrax — Is that quote fair?">
+<meta property="og:description" content="Check any contractor quote against public records and local prices. Get a verdict, red flags, and a ready-to-send counter-offer in minutes.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E5C42'/%3E%3Cpath d='M9 17.5l4.5 4.5L23 10.5' stroke='%23F7F3EB' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="#top" aria-label="Contrax home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><path d="M9 17.5l4.5 4.5L23 10.5"/></svg>
+      <span>Contrax</span>
+    </a>
+    <nav class="site-nav" id="nav">
+      <a href="#how">How it works</a>
+      <a href="#report">Sample report</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-solid head-cta" href="#join">Check a quote</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">For homeowners, landlords, and worried kids</p>
+      <h1>Is that quote <em>fair?</em><br>Find out before you sign.</h1>
+      <p class="lede">Snap a photo of any contractor quote — plumbing, HVAC, roofing. Contrax checks it against local permit records, state license boards, and real prices near you, then writes the counter-offer for you to send.</p>
+      <div class="cta-row">
+        <a class="btn btn-solid" href="#join">Check a quote</a>
+        <a class="btn btn-ghost" href="#report">See a sample report</a>
+      </div>
+      <p class="trust-line">Backed by public records — permits, licenses, complaint histories. Not vibes.</p>
+    </div>
+
+    <!-- Animated quote scan -->
+    <div class="hero-visual" aria-hidden="true">
+      <div class="doc">
+        <div class="doc-head">
+          <span class="doc-title">Anderson Plumbing Co.</span>
+          <span class="doc-sub">Quote #1047 · Wichita, KS</span>
+        </div>
+        <div class="doc-line"><span>Repair leak, upstairs bath</span><b>$1,400</b></div>
+        <div class="doc-line" data-flag="2"><span>Materials &amp; misc, as needed</span><b>$600</b></div>
+        <div class="doc-line doc-total"><span>Total due</span><b>$2,000</b></div>
+        <div class="doc-line doc-deposit" data-flag="1"><span>Deposit due today</span><b>50%</b></div>
+        <div class="doc-foot" data-flag="3">Signature: ______________</div>
+        <div class="scanline"></div>
+        <div class="flag flag-1">50% deposit — standard is 10–30%</div>
+        <div class="flag flag-2">"As needed" — vague scope</div>
+        <div class="flag flag-3">No license number listed</div>
+        <div class="stamp">Negotiate</div>
+        <div class="counter-chip">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          Counter-offer drafted · $1,150
+        </div>
+      </div>
+      <div class="doc-shadow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TICKER ============ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Standard contractor deposit: 10–30%, never 50%</span><i>·</i>
+    <span>Water heater replacement, typical: $1,300–$2,400</span><i>·</i>
+    <span>Always get the license number in writing</span><i>·</i>
+    <span>Asphalt roof replacement, typical: $9,500–$17,000</span><i>·</i>
+    <span>"As needed" is not a scope — get line items</span><i>·</i>
+    <span>Full HVAC replacement, typical: $7,000–$12,500</span><i>·</i>
+    <span>Permits are public record — we read them</span><i>·</i>
+    <span>Standard contractor deposit: 10–30%, never 50%</span><i>·</i>
+    <span>Water heater replacement, typical: $1,300–$2,400</span><i>·</i>
+    <span>Always get the license number in writing</span><i>·</i>
+    <span>Asphalt roof replacement, typical: $9,500–$17,000</span><i>·</i>
+    <span>"As needed" is not a scope — get line items</span><i>·</i>
+    <span>Full HVAC replacement, typical: $7,000–$12,500</span><i>·</i>
+    <span>Permits are public record — we read them</span><i>·</i>
+  </div>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section" id="how">
+  <div class="wrap">
+    <p class="eyebrow reveal">How it works</p>
+    <h2 class="reveal">Three minutes to the upper hand</h2>
+    <div class="steps">
+      <article class="step reveal">
+        <span class="step-num">01</span>
+        <svg class="step-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        <h3>Snap the quote</h3>
+        <p>A photo, a screenshot of a text, a PDF — however the quote reached you, send it as-is. We read the messy handwriting too.</p>
+      </article>
+      <article class="step reveal">
+        <span class="step-num">02</span>
+        <svg class="step-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+        <h3>We check the record</h3>
+        <p>License status from the state board. Permit filings for similar jobs near you. Complaint history. Local price ranges. All sourced, all cited.</p>
+      </article>
+      <article class="step reveal">
+        <span class="step-num">03</span>
+        <svg class="step-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <h3>Send the counter</h3>
+        <p>You get a verdict, the red flags in plain English, and a counter-offer written as a text message. Copy, send, save real money.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SAMPLE REPORT ============ -->
+<section class="section section-tint" id="report">
+  <div class="wrap report-grid">
+    <div class="report-copy">
+      <p class="eyebrow reveal">Sample report</p>
+      <h2 class="reveal">What comes back</h2>
+      <p class="reveal">A verdict you can act on — not a chatbot conversation. Every claim traces to a source: the state license board, municipal permit records, or published local prices. The counter-offer arrives ready to send.</p>
+      <ul class="check-list reveal">
+        <li>Fair-price range for your zip code and trade</li>
+        <li>Red flags in the fine print, explained plainly</li>
+        <li>License and complaint check on the contractor</li>
+        <li>A counter-offer written for you</li>
+      </ul>
+    </div>
+
+    <div class="report-card reveal" role="img" aria-label="Example Contrax report showing a $2,000 leak repair quote flagged as above the local range with a drafted counter-offer">
+      <div class="report-head">
+        <span>Contrax report</span>
+        <span class="report-meta">Leak repair · 67202</span>
+      </div>
+      <div class="verdict">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5" class="verdict-mark"/></svg>
+        3 red flags — negotiate before signing
+      </div>
+      <div class="bars">
+        <div class="bar-row">
+          <span class="bar-label">Their quote</span>
+          <div class="bar bar-theirs" style="--w:100%"><b>$2,000</b></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Local range</span>
+          <div class="bar bar-local" style="--w:55%"><b>$650–$1,100</b></div>
+        </div>
+      </div>
+      <p class="report-note">Based on 14 plumbing permits filed within 5 miles this year.</p>
+      <div class="counter-box">
+        <p class="counter-label">Your counter-offer, ready to text</p>
+        <p class="counter-msg" id="counterMsg">"Hi Dave — thanks for the quote. Comparable leak repairs in this area are running $650–$1,100 permitted, so $2,000 is above range. I can move forward this week at $1,150 with a 20% deposit and the scope itemized. Does that work?"</p>
+        <button class="btn btn-small" id="copyBtn" type="button">Copy message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DATA / MAP ============ -->
+<section class="section" id="data">
+  <div class="wrap data-grid">
+    <div class="map-visual reveal" aria-hidden="true">
+      <svg viewBox="0 0 460 320">
+        <path class="map-road" d="M20 250 Q 130 200 230 225 T 445 185"/>
+        <path class="map-road" d="M90 20 Q 120 130 100 300"/>
+        <path class="map-road" d="M300 15 Q 280 140 330 305"/>
+        <g class="permits">
+          <circle cx="70" cy="80" r="6"/><circle cx="150" cy="55" r="6"/><circle cx="205" cy="120" r="6"/>
+          <circle cx="120" cy="180" r="6"/><circle cx="280" cy="70" r="6"/><circle cx="350" cy="130" r="6"/>
+          <circle cx="395" cy="70" r="6"/><circle cx="255" cy="185" r="6"/><circle cx="180" cy="255" r="6"/>
+          <circle cx="330" cy="235" r="6"/><circle cx="60" cy="285" r="6"/>
+          <circle cx="415" cy="255" r="6"/><circle cx="240" cy="285" r="6"/>
+        </g>
+        <circle class="you" cx="230" cy="160" r="9"/>
+        <circle class="you-pulse" cx="230" cy="160" r="9"/>
+      </svg>
+      <div class="map-tip">
+        <b>14 permits nearby</b>
+        <span>median job: $1,050</span>
+      </div>
+    </div>
+    <div class="data-copy">
+      <p class="eyebrow reveal">The data</p>
+      <h2 class="reveal">Priced against public records, not opinions</h2>
+      <p class="reveal">Every city keeps permit records. Every state keeps license rolls. Almost nobody reads them. Contrax does — so your report says what similar jobs <em>actually cost</em> on your street, whether the contractor's license is current, and what complaints are on file.</p>
+      <p class="reveal">No pay-to-play rankings. Contractors can't buy their way into a better verdict, because they aren't our customer. You are.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAMILY PLAN ============ -->
+<section class="section section-dark" id="family">
+  <div class="wrap family-grid">
+    <div>
+      <p class="eyebrow reveal">Family plan</p>
+      <h2 class="reveal">Look out for your parents from anywhere</h2>
+      <p class="reveal">The people most targeted by overpriced quotes are the least likely to question them. Add your parents to your plan: when Mom photographs a quote, everyone on the plan can see the report — and you get a heads-up before anything gets signed.</p>
+    </div>
+    <div class="phone-alert reveal" aria-hidden="true">
+      <div class="alert-card">
+        <div class="alert-dot"></div>
+        <div>
+          <b>Contrax alert</b>
+          <p>Margaret checked a $2,000 plumbing quote — it's above local range. View the report before she signs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <p class="eyebrow reveal">Pricing</p>
+    <h2 class="reveal">Cheaper than getting it wrong</h2>
+    <div class="plans">
+      <article class="plan reveal">
+        <h3>Single report</h3>
+        <p class="price">$19</p>
+        <p class="per">per quote</p>
+        <ul>
+          <li>Full verdict &amp; red flags</li>
+          <li>License &amp; complaint check</li>
+          <li>Ready-to-send counter-offer</li>
+        </ul>
+        <a class="btn btn-ghost" href="#join">Check one quote</a>
+      </article>
+      <article class="plan plan-featured reveal">
+        <span class="plan-badge">Most popular</span>
+        <h3>Compare three</h3>
+        <p class="price">$49</p>
+        <p class="per">three quotes, one job</p>
+        <ul>
+          <li>Everything in Single</li>
+          <li>Side-by-side comparison</li>
+          <li>Best-choice recommendation</li>
+        </ul>
+        <a class="btn btn-solid" href="#join">Compare quotes</a>
+      </article>
+      <article class="plan reveal">
+        <h3>Family plan</h3>
+        <p class="price">$99</p>
+        <p class="per">per year, up to 5 people</p>
+        <ul>
+          <li>Unlimited reports</li>
+          <li>Shared with your parents</li>
+          <li>Alerts before they sign</li>
+        </ul>
+        <a class="btn btn-ghost" href="#join">Protect the family</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section section-tint" id="faq">
+  <div class="wrap wrap-narrow">
+    <p class="eyebrow reveal">Questions</p>
+    <h2 class="reveal">Fair questions</h2>
+    <details class="faq reveal">
+      <summary>Where do your price ranges come from?</summary>
+      <p>Municipal permit filings near your zip code, published regional cost data, and quotes analyzed on Contrax. Every range in your report is labeled with its source and a confidence level — when the data is thin, we say so instead of guessing.</p>
+    </details>
+    <details class="faq reveal">
+      <summary>Is this legal advice?</summary>
+      <p>No. Contrax gives you pricing information and negotiation help, not legal or professional advice. For contract disputes, talk to a lawyer.</p>
+    </details>
+    <details class="faq reveal">
+      <summary>Do contractors pay to be recommended?</summary>
+      <p>No, and they never will. Contractors aren't our customer — you are. Verdicts are built from public records and document analysis, not sponsorships.</p>
+    </details>
+    <details class="faq reveal">
+      <summary>What if the quote is actually fair?</summary>
+      <p>Then we tell you that, plainly — and you sign with confidence instead of doubt. "This is a fair price, here's why" is just as valuable as catching a bad one.</p>
+    </details>
+    <details class="faq reveal">
+      <summary>What trades do you cover?</summary>
+      <p>Plumbing, HVAC, and roofing at launch — the highest-ticket, highest-risk jobs. More trades as our data earns the right to judge them.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============ JOIN ============ -->
+<section class="section join" id="join">
+  <div class="wrap wrap-narrow join-inner">
+    <h2 class="reveal">Get the upper hand</h2>
+    <p class="reveal">Contrax is opening city by city. Leave your email and we'll let you in when your area goes live.</p>
+    <form class="join-form reveal" id="joinForm" novalidate>
+      <input type="email" name="email" id="joinEmail" placeholder="you@example.com" required aria-label="Email address">
+      <button class="btn btn-solid" type="submit">Join the list</button>
+    </form>
+    <p class="join-done" id="joinDone" hidden>You're on the list. We'll email you when your city opens.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-row">
+    <div class="brand brand-foot">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><path d="M9 17.5l4.5 4.5L23 10.5"/></svg>
+      <span>Contrax</span>
+    </div>
+    <p class="foot-note">Contrax provides pricing information, not legal or professional advice. Example figures shown are illustrative. © 2026 Contrax.</p>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

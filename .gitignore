@@ -1,0 +1,11 @@
+# Secrets & local config — never commit real endpoints or keys
+js/config.js
+.env
+.env.*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
