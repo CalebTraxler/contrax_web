@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your report — Contrax</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E5C42'/%3E%3Cpath d='M9 17.5l4.5 4.5L23 10.5' stroke='%23F7F3EB' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.report-page{max-width:680px;margin:0 auto}
+.pending{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:44px;text-align:center}
+.spinner{width:36px;height:36px;border:3px solid var(--line);border-top-color:var(--green);border-radius:50%;margin:0 auto 18px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rp-card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:30px;margin-bottom:22px}
+.rp-verdict{display:flex;gap:10px;align-items:center;font-weight:600;padding:13px 16px;border-radius:9px;margin-bottom:20px}
+.rp-verdict.fair{background:#E4EFE0;color:#2C5B27}
+.rp-verdict.negotiate{background:var(--flag-soft);color:#8A3421}
+.rp-verdict.caution{background:#F6DAD3;color:#8A2413}
+.rp-flag{padding:12px 0;border-bottom:1px dashed var(--line-soft)}
+.rp-flag b{font-size:.95rem}
+.rp-flag.danger b::before{content:"\26A0  ";color:var(--flag)}
+.rp-flag.warning b::before{content:"\26A0  ";color:var(--amber)}
+.rp-flag p{font-size:.9rem;color:var(--ink-soft);margin-top:3px}
+.rp-src{font-size:.78rem;color:var(--ink-faint)}
+.rp-msg{background:var(--paper);border-radius:10px;padding:16px;font-size:.93rem;color:var(--ink-soft);margin:12px 0 14px}
+h3{margin-bottom:8px}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><path d="M9 17.5l4.5 4.5L23 10.5"/></svg><span>Contrax</span></a>
+  </div>
+</header>
+<main class="section">
+  <div class="wrap report-page" id="root">
+    <div class="pending" id="pending">
+      <div class="spinner" aria-hidden="true"></div>
+      <h3>Analyzing your quote</h3>
+      <p style="color:var(--ink-soft)">Reading the document, checking public records, and pricing the job. This usually takes a minute or two — you can leave this page open.</p>
+    </div>
+  </div>
+</main>
+<script>
+(function () {
+  var id = new URLSearchParams(location.search).get("id");
+  var root = document.getElementById("root");
+  if (!id) { root.innerHTML = "<p>Missing report id.</p>"; return; }
+  function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : String(s); return d.innerHTML; }
+  function money(n) { return n == null ? "—" : "$" + Number(n).toLocaleString(); }
+
+  function render(r) {
+    var flags = r.red_flags.map(function (f) {
+      return '<div class="rp-flag ' + esc(f.severity) + '"><b>' + esc(f.title) + '</b><p>' + esc(f.detail) + '</p></div>';
+    }).join("");
+    var findings = r.research_findings.map(function (f) {
+      return '<div class="rp-flag"><p>' + esc(f.finding) + ' <span class="rp-src">— ' + esc(f.source) + '</span></p></div>';
+    }).join("");
+    var qs = r.questions_to_ask.map(function (q) { return "<li>" + esc(q) + "</li>"; }).join("");
+    root.innerHTML =
+      '<p class="eyebrow">Contrax report</p>' +
+      '<div class="rp-card">' +
+        '<div class="rp-verdict ' + esc(r.verdict) + '">' + esc(r.headline) + "</div>" +
+        "<p><b>Their quote:</b> " + money(r.quote_total) + " &nbsp;·&nbsp; <b>Local range:</b> " +
+        money(r.local_range_low) + "–" + money(r.local_range_high) +
+        ' <span class="rp-src">(confidence: ' + esc(r.price_confidence) + ")</span></p>" +
+        '<p class="rp-src" style="margin-top:6px">' + esc(r.price_basis) + "</p></div>" +
+      '<div class="rp-card"><h3>Red flags</h3>' + (flags || "<p>None found.</p>") + "</div>" +
+      '<div class="rp-card"><h3>What we found researching the contractor</h3>' + (findings || "<p>Nothing verifiable found.</p>") + "</div>" +
+      '<div class="rp-card"><h3>Your counter-offer, ready to send</h3>' +
+        '<div class="rp-msg" id="msg">' + esc(r.counter_offer_message) + "</div>" +
+        '<button class="btn btn-small" id="copyBtn" type="button">Copy message</button></div>' +
+      '<div class="rp-card"><h3>Questions to ask before signing</h3><ul style="padding-left:20px;color:var(--ink-soft)">' + qs + "</ul></div>" +
+      '<p class="rp-src">Contrax provides pricing information, not legal or professional advice.</p>';
+    document.getElementById("copyBtn").addEventListener("click", function () {
+      navigator.clipboard.writeText(r.counter_offer_message);
+      this.textContent = "Copied";
+    });
+  }
+
+  async function poll() {
+    try {
+      var res = await fetch("/api/reports/" + encodeURIComponent(id));
+      var data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Report not found");
+      if (data.status === "complete") { render(data.report); return; }
+      if (data.status === "failed") {
+        root.innerHTML = '<div class="pending"><h3>Analysis failed</h3><p style="color:var(--ink-soft)">' + esc(data.error) + "</p></div>";
+        return;
+      }
+      if (data.status === "pending_payment") {
+        document.querySelector("#pending h3").textContent = "Waiting for payment";
+      }
+      setTimeout(poll, 3000);
+    } catch (ex) {
+      root.innerHTML = '<div class="pending"><h3>Hmm</h3><p style="color:var(--ink-soft)">' + esc(ex.message) + "</p></div>";
+    }
+  }
+  poll();
+})();
+</script>
+</body>
+</html>

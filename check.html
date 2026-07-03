@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check a quote — Contrax</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E5C42'/%3E%3Cpath d='M9 17.5l4.5 4.5L23 10.5' stroke='%23F7F3EB' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.form-card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:34px;max-width:560px;margin:0 auto;box-shadow:0 24px 60px -28px rgba(28,43,36,.3)}
+.form-card label{display:block;font-size:.85rem;font-weight:600;margin:18px 0 6px}
+.form-card input[type=text],.form-card input[type=email],.form-card select,.form-card textarea{
+  width:100%;font-family:var(--font-body);font-size:.95rem;padding:11px 14px;
+  border:1.5px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);outline:none;
+}
+.form-card input:focus,.form-card select:focus,.form-card textarea:focus{border-color:var(--green)}
+.form-card textarea{min-height:110px;resize:vertical}
+.drop{border:2px dashed var(--line);border-radius:9px;padding:22px;text-align:center;font-size:.9rem;color:var(--ink-soft);cursor:pointer}
+.drop.has-file{border-color:var(--green);color:var(--green);font-weight:600}
+.form-err{color:var(--flag);font-size:.88rem;margin-top:14px;display:none}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><path d="M9 17.5l4.5 4.5L23 10.5"/></svg><span>Contrax</span></a>
+  </div>
+</header>
+<main class="section">
+  <div class="wrap wrap-narrow">
+    <p class="eyebrow">Check a quote</p>
+    <h2>Send us the quote, get the verdict</h2>
+    <p style="color:var(--ink-soft);margin-bottom:34px">A photo, a PDF, or the text of a text message — however it reached you.</p>
+    <form class="form-card" id="quoteForm">
+      <div class="drop" id="drop" tabindex="0">Tap to add a photo or PDF of the quote</div>
+      <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" hidden>
+      <label for="quoteText">Or paste the quote text</label>
+      <textarea id="quoteText" placeholder="Repair leak upstairs bath — $2,000. 50% deposit due today..."></textarea>
+      <label for="zip">Your zip code</label>
+      <input type="text" id="zip" inputmode="numeric" maxlength="5" placeholder="67202" required>
+      <label for="trade">Type of work</label>
+      <select id="trade">
+        <option value="plumbing">Plumbing</option>
+        <option value="hvac">Heating &amp; cooling (HVAC)</option>
+        <option value="roofing">Roofing</option>
+        <option value="electrical">Electrical</option>
+        <option value="other">Other</option>
+      </select>
+      <label for="email">Email (for your report link)</label>
+      <input type="email" id="email" placeholder="you@example.com">
+      <p class="form-err" id="err"></p>
+      <button class="btn btn-solid" type="submit" id="submitBtn" style="width:100%;margin-top:22px">Analyze my quote</button>
+    </form>
+  </div>
+</main>
+<script>
+(function () {
+  var drop = document.getElementById("drop"), fileInput = document.getElementById("file");
+  drop.addEventListener("click", function () { fileInput.click(); });
+  fileInput.addEventListener("change", function () {
+    if (fileInput.files[0]) { drop.textContent = fileInput.files[0].name; drop.classList.add("has-file"); }
+  });
+  var form = document.getElementById("quoteForm"), err = document.getElementById("err"),
+      btn = document.getElementById("submitBtn");
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault(); err.style.display = "none";
+    var fd = new FormData();
+    fd.append("zip_code", document.getElementById("zip").value.trim());
+    fd.append("trade", document.getElementById("trade").value);
+    fd.append("email", document.getElementById("email").value.trim());
+    fd.append("quote_text", document.getElementById("quoteText").value);
+    if (fileInput.files[0]) fd.append("file", fileInput.files[0]);
+    btn.disabled = true; btn.textContent = "Uploading…";
+    try {
+      var res = await fetch("/api/quotes", { method: "POST", body: fd });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Something went wrong");
+      if (data.checkout_url) window.location = data.checkout_url;
+      else window.location = "report.html?id=" + data.report_id;
+    } catch (ex) {
+      err.textContent = ex.message; err.style.display = "block";
+      btn.disabled = false; btn.textContent = "Analyze my quote";
+    }
+  });
+})();
+</script>
+</body>
+</html>
