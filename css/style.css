@@ -70,12 +70,12 @@ h3{font-size:1.3rem}
   border-bottom:1px solid var(--line-soft);
 }
 .head-row{display:flex;align-items:center;gap:34px;height:72px}
-.brand{display:flex;align-items:center;gap:2px;font-family:var(--font-display);font-size:1.45rem;font-weight:600;letter-spacing:-.01em}
-.brand-x{width:.9em;height:.9em;overflow:visible;transform:translateY(.13em);transition:transform .45s cubic-bezier(.25,1,.35,1)}
-.brand:hover .brand-x{transform:translateY(.13em) rotate(90deg)}
-.brand-x path{fill:none;stroke-linecap:round}
-.brand-x .x1{stroke:var(--green);stroke-width:6.5}
-.brand-x .x2{stroke:var(--amber);stroke-width:5.5}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-size:1.4rem;font-weight:600;letter-spacing:-.01em}
+.brand-mark{width:38px;height:38px;overflow:visible;transition:transform .45s cubic-bezier(.25,1,.35,1)}
+.brand:hover .brand-mark{transform:rotate(-8deg)}
+.brand-mark .m-roof{stroke:var(--ink);stroke-width:11;fill:none}
+.brand-mark .m-ink,.brand-mark .m-win rect{fill:var(--ink)}
+.brand-mark .m-check{stroke:var(--flag);stroke-width:12;fill:none}
 .site-nav{display:flex;gap:28px;margin-left:auto}
 .site-nav a{font-size:.92rem;font-weight:500;color:var(--ink-soft);position:relative}
 .site-nav a::after{
