@@ -71,9 +71,11 @@ h3{font-size:1.3rem}
 }
 .head-row{display:flex;align-items:center;gap:34px;height:72px}
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.35rem;font-weight:600}
-.brand-mark{width:30px;height:30px}
-.brand-mark rect{fill:var(--green)}
-.brand-mark path{stroke:var(--paper);stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.brand-mark{width:32px;height:32px;transition:transform .5s cubic-bezier(.25,1,.35,1)}
+.brand:hover .brand-mark{transform:rotate(-14deg)}
+.brand-mark .bg{fill:var(--green)}
+.brand-mark .ring{fill:none;stroke:var(--amber);stroke-width:2;stroke-dasharray:3.2 3.2}
+.brand-mark path{stroke:var(--paper);stroke-width:4.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .site-nav{display:flex;gap:28px;margin-left:auto}
 .site-nav a{font-size:.92rem;font-weight:500;color:var(--ink-soft);position:relative}
 .site-nav a::after{
