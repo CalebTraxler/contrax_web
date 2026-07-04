@@ -134,6 +134,22 @@ async def stripe_webhook(request: Request):
     return {"received": True}
 
 
+@app.post("/api/reports/{report_id}/followup")
+def followup(report_id: str, payload: dict):
+    reply = (payload.get("reply") or "").strip()
+    if not 3 <= len(reply) <= 4000:
+        raise HTTPException(422, "Paste the contractor's reply (a few words to a few paragraphs)")
+    row = db.get_report(report_id)
+    if not row or row["status"] != "complete" or not row["report_json"]:
+        raise HTTPException(404, "Report not found or not complete yet")
+    try:
+        result = analyzer.follow_up(json.loads(row["report_json"]), reply)
+    except analyzer.AnalysisError as e:
+        raise HTTPException(503, str(e))
+    db.add_followup(report_id, reply, result)
+    return result
+
+
 @app.get("/api/reports/{report_id}")
 def get_report(report_id: str):
     row = db.get_report(report_id)

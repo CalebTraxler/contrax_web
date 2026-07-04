@@ -25,6 +25,13 @@ CREATE TABLE IF NOT EXISTS waitlist (
     email TEXT PRIMARY KEY,
     created_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS followups (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    contractor_reply TEXT NOT NULL,
+    response_json TEXT
+);
 """
 
 
@@ -75,6 +82,14 @@ def set_report_result(report_id, report: dict):
 
 def set_report_failed(report_id, error: str):
     update_report(report_id, status="failed", error=error[:2000])
+
+
+def add_followup(report_id: str, contractor_reply: str, response: dict):
+    with conn() as c:
+        c.execute(
+            "INSERT INTO followups (report_id, created_at, contractor_reply, response_json) VALUES (?,?,?,?)",
+            (report_id, now(), contractor_reply, json.dumps(response)),
+        )
 
 
 def add_waitlist(email: str):

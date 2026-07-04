@@ -100,6 +100,59 @@ REPORT_SCHEMA = {
 }
 
 
+FOLLOWUP_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "advice": {"type": "string"},
+        "message": {"type": "string"},
+    },
+    "required": ["advice", "message"],
+    "additionalProperties": False,
+}
+
+
+def follow_up(report: dict, contractor_reply: str) -> dict:
+    """Negotiation copilot: given the report and the contractor's reply, plan the next move."""
+    if settings.mock_analysis:
+        return {
+            "advice": (
+                "That's progress, but $1,800 is still well above the local range of $650-$1,100. "
+                "He moved once, which means he can move again. Counter firmly but leave him a "
+                "face-saving reason to say yes."
+            ),
+            "message": (
+                "Thanks for coming down. I want to work with you, but $1,800 is still above what "
+                "comparable jobs run here. I can sign today at $1,300 with a 20% deposit — "
+                "otherwise I'll need to get two more bids."
+            ),
+        }
+    client = _client()
+    context = {k: report.get(k) for k in (
+        "verdict", "quote_total", "local_range_low", "local_range_high",
+        "price_confidence", "counter_offer_message",
+    )}
+    context["red_flags"] = [f["title"] for f in report.get("red_flags", [])]
+    prompt = (
+        "You are Contrax's negotiation coach for a homeowner dealing with a contractor. "
+        "Plain, warm, non-technical English.\n\n"
+        f"The original analysis:\n{json.dumps(context)}\n\n"
+        f"The homeowner sent the counter-offer. The contractor replied:\n\"{contractor_reply}\"\n\n"
+        "Return:\n"
+        "- advice: 2-3 sentences assessing the reply and the smartest next move. Be honest — "
+        "if the contractor's reply is now fair or reasonable, say to take the deal.\n"
+        "- message: the next text message for the homeowner to send. Polite, firm, short. "
+        "Never invent facts not present in the analysis."
+    )
+    resp = client.messages.create(
+        model=settings.extraction_model,
+        max_tokens=4000,
+        thinking={"type": "adaptive"},
+        output_config={"format": {"type": "json_schema", "schema": FOLLOWUP_SCHEMA}},
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return json.loads(_text_of(resp))
+
+
 def _client() -> anthropic.Anthropic:
     if not settings.anthropic_api_key:
         raise AnalysisError("ANTHROPIC_API_KEY is not configured")
