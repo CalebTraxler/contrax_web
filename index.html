@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contrax — Know if a contractor's quote is fair, before you sign</title>
-<meta name="description" content="Snap a photo of any contractor quote. Contrax checks it against local permit records, license boards, and real prices near you — then writes your counter-offer.">
-<meta property="og:title" content="Contrax — Is that quote fair?">
-<meta property="og:description" content="Check any contractor quote against public records and local prices. Get a verdict, red flags, and a ready-to-send counter-offer in minutes.">
+<title>Contrax — Scan your contractor quote for overcharges, free</title>
+<meta name="description" content="Don't sign that contractor quote yet. Snap a photo and Contrax scans it free for overcharges, red flags, and license problems — then writes the reply that gets you a fair deal.">
+<meta property="og:title" content="Contrax — Don't sign that quote yet">
+<meta property="og:description" content="Free scan of any contractor quote: overcharges, red flags, license problems. Then the reply that gets you a fair deal.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23F6F2E9'/%3E%3Cpath d='M16 50 52 14 74 36' stroke='%231C2B24' stroke-width='11' fill='none'/%3E%3Crect x='28' y='18' width='9' height='13' fill='%231C2B24'/%3E%3Cg fill='%231C2B24' transform='rotate(-45 52 50)'%3E%3Crect x='40' y='38' width='11' height='11'/%3E%3Crect x='54' y='38' width='11' height='11'/%3E%3Crect x='40' y='52' width='11' height='11'/%3E%3Crect x='54' y='52' width='11' height='11'/%3E%3C/g%3E%3Cpath d='M28 62 52 86 90 44' stroke='%23BE4B33' stroke-width='12' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,7 @@
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn-solid head-cta" href="check.html">Check a quote</a>
+    <a class="btn btn-solid head-cta" href="check.html">Scan my quote — free</a>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
       <span></span><span></span>
     </button>
@@ -40,17 +40,17 @@
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">Carfax, but for contractor quotes</p>
-      <h1>The plumber says <em>$2,000.</em><br>The fair price is $1,100.</h1>
-      <p class="lede">Snap a photo of any repair quote — plumbing, HVAC, roofing. Contrax checks the price against your area, verifies the contractor's license and complaint history, and writes the reply that gets you a fair deal.</p>
+      <p class="eyebrow">Before you sign anything</p>
+      <h1>Don't sign that <em>quote</em> yet.</h1>
+      <p class="lede">The same repair gets quoted thousands of dollars apart. Snap a photo of any contractor quote — plumbing, HVAC, roofing — and Contrax scans it for overcharges, red flags, and license problems. Free, in about 30 seconds.</p>
       <div class="cta-row">
-        <a class="btn btn-solid" href="check.html">Check a quote</a>
-        <a class="btn btn-ghost" href="#report">See a sample report</a>
+        <a class="btn btn-solid" href="check.html">Scan my quote — free</a>
+        <a class="btn btn-ghost" href="#report">See what you get</a>
       </div>
-      <p class="trust-line">Backed by public records — permits, licenses, complaint histories. Not vibes.</p>
+      <p class="trust-line">No account needed · Contractors can't pay us · Your quote stays private</p>
     </div>
 
-    <!-- Before/after: quote in, report out -->
+    <!-- Before/after: quote in, free scan out -->
     <div class="hero-visual" aria-hidden="true">
       <div class="duo">
         <div class="duo-card duo-quote">
@@ -60,69 +60,79 @@
           <div class="duo-line"><span>Materials, <span class="hl">"as needed"</span></span><b>$600</b></div>
           <div class="duo-line duo-total"><span>Total due</span><b>$2,000</b></div>
           <div class="duo-line"><span>Deposit due today</span><b class="hl">50%</b></div>
-          <div class="mini-stamp">Overpriced</div>
+          <div class="mini-stamp">3 flags</div>
         </div>
         <div class="duo-arrow">
           <svg width="46" height="18" viewBox="0 0 46 18"><path class="flow" d="M2 9h34"/><path class="head" d="M32 3l8 6-8 6"/></svg>
-          <span>30 sec</span>
+          <span>free · 30 sec</span>
         </div>
         <div class="duo-card duo-report">
-          <p class="duo-label">Your Contrax report</p>
-          <p class="mini-verdict">Overpriced — negotiate</p>
-          <p class="mini-range">Fair price near you: <b>$650–$1,100</b></p>
+          <p class="duo-label">Your free scan</p>
+          <p class="mini-verdict">3 red flags found</p>
           <p class="mini-flag">50% deposit — standard is 10–30%</p>
           <p class="mini-flag">No license number listed</p>
-          <p class="mini-msg">"I can move forward at <b>$1,150</b> with a 20% deposit and the scope itemized."</p>
-          <span class="mini-send">Ready to text back &rarr;</span>
+          <p class="mini-flag">"As needed" — open-ended scope</p>
+          <div class="mini-lock">
+            <p class="mini-msg blur">Fair price near you: $650–$1,100. Send: "I can move forward at $1,150 with a 20% deposit…"</p>
+            <p class="mini-lock-note">Full report: the fair price + the reply to send</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ TICKER ============ -->
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-track">
-    <span>Standard contractor deposit: 10–30%, never 50%</span><i>·</i>
-    <span>Water heater replacement, typical: $1,300–$2,400</span><i>·</i>
-    <span>Always get the license number in writing</span><i>·</i>
-    <span>Asphalt roof replacement, typical: $9,500–$17,000</span><i>·</i>
-    <span>"As needed" is not a scope — get line items</span><i>·</i>
-    <span>Full HVAC replacement, typical: $7,000–$12,500</span><i>·</i>
-    <span>Permits are public record — we read them</span><i>·</i>
-    <span>Standard contractor deposit: 10–30%, never 50%</span><i>·</i>
-    <span>Water heater replacement, typical: $1,300–$2,400</span><i>·</i>
-    <span>Always get the license number in writing</span><i>·</i>
-    <span>Asphalt roof replacement, typical: $9,500–$17,000</span><i>·</i>
-    <span>"As needed" is not a scope — get line items</span><i>·</i>
-    <span>Full HVAC replacement, typical: $7,000–$12,500</span><i>·</i>
-    <span>Permits are public record — we read them</span><i>·</i>
+<!-- ============ THE OLD WAY ============ -->
+<section class="section section-tint" id="why">
+  <div class="wrap">
+    <p class="eyebrow reveal">The old way</p>
+    <h2 class="reveal">Right now, all your options cost you</h2>
+    <div class="steps">
+      <article class="step reveal">
+        <span class="step-num">01</span>
+        <svg class="step-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>
+        <h3>Collect more quotes</h3>
+        <p>Weeks of phone tag and strangers walking through your house — and at the end, you're still guessing which number is fair.</p>
+      </article>
+      <article class="step reveal">
+        <span class="step-num">02</span>
+        <svg class="step-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>
+        <h3>Haggle blind</h3>
+        <p>The price feels high, but you can't prove it. So you don't push — because who wants to argue with the only plumber who called back?</p>
+      </article>
+      <article class="step reveal">
+        <span class="step-num">03</span>
+        <svg class="step-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M12 15l-4-4M12 15l4-4"/><path d="M5 21h14"/></svg>
+        <h3>Settle for bid #1</h3>
+        <p>The most expensive option of all: sign the first quote, overpay by hundreds or thousands, and never find out.</p>
+      </article>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- ============ HOW IT WORKS ============ -->
 <section class="section" id="how">
   <div class="wrap">
-    <p class="eyebrow reveal">How it works</p>
+    <p class="eyebrow reveal">The Contrax way</p>
     <h2 class="reveal">Three minutes to the upper hand</h2>
     <div class="steps">
       <article class="step reveal">
         <span class="step-num">01</span>
         <svg class="step-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
         <h3>Snap the quote</h3>
-        <p>A photo, a screenshot of a text, a PDF — however the quote reached you, send it as-is. We read the messy handwriting too.</p>
+        <p>A photo, a screenshot of a text, a PDF — however it reached you. No account, no credit card.</p>
       </article>
       <article class="step reveal">
         <span class="step-num">02</span>
         <svg class="step-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
-        <h3>We check the record</h3>
-        <p>License status from the state board. Permit filings for similar jobs near you. Complaint history. Local price ranges. All sourced, all cited.</p>
+        <h3>Get your free scan</h3>
+        <p>In about 30 seconds: every red flag in the fine print — inflated deposits, vague scope, missing license, pressure tactics.</p>
       </article>
       <article class="step reveal">
         <span class="step-num">03</span>
         <svg class="step-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-        <h3>Send the counter</h3>
-        <p>You get a verdict, the red flags in plain English, and a counter-offer written as a text message. Copy, send, save real money.</p>
+        <h3>Unlock the playbook</h3>
+        <p>For $19: the fair price for your zip code, the contractor's license and complaint history, and the exact reply to send — with a coach until it's settled.</p>
       </article>
     </div>
   </div>
@@ -134,11 +144,11 @@
     <div class="report-copy">
       <p class="eyebrow reveal">Sample report</p>
       <h2 class="reveal">What comes back</h2>
-      <p class="reveal">A verdict you can act on — not a chatbot conversation. Every claim traces to a source: the state license board, municipal permit records, or published local prices. The counter-offer arrives ready to send.</p>
+      <p class="reveal">Every claim traces to a source: the state license board, public records, or published local prices. And it ends with the exact message to send — most people save more than the report costs in one text.</p>
       <ul class="check-list reveal">
-        <li>Fair-price range for your zip code and trade</li>
-        <li>Red flags in the fine print, explained plainly</li>
-        <li>License and complaint check on the contractor</li>
+        <li>Red flags in the fine print — free</li>
+        <li>Fair-price range for your zip code</li>
+        <li>License &amp; complaint check on the contractor</li>
         <li>A counter-offer written for you</li>
       </ul>
     </div>
@@ -162,63 +172,11 @@
           <div class="bar bar-local" style="--w:55%"><b>$650–$1,100</b></div>
         </div>
       </div>
-      <p class="report-note">Based on 14 plumbing permits filed within 5 miles this year.</p>
+      <p class="report-note">Based on published local prices and permit records near this zip.</p>
       <div class="counter-box">
         <p class="counter-label">Your counter-offer, ready to text</p>
-        <p class="counter-msg" id="counterMsg">"Hi Dave — thanks for the quote. Comparable leak repairs in this area are running $650–$1,100 permitted, so $2,000 is above range. I can move forward this week at $1,150 with a 20% deposit and the scope itemized. Does that work?"</p>
+        <p class="counter-msg" id="counterMsg">"Hi Dave — thanks for the quote. Comparable leak repairs in this area are running $650–$1,100, so $2,000 is above range. I can move forward this week at $1,150 with a 20% deposit and the scope itemized. Does that work?"</p>
         <button class="btn btn-small" id="copyBtn" type="button">Copy message</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ DATA / MAP ============ -->
-<section class="section" id="data">
-  <div class="wrap data-grid">
-    <div class="map-visual reveal" aria-hidden="true">
-      <svg viewBox="0 0 460 320">
-        <path class="map-road" d="M20 250 Q 130 200 230 225 T 445 185"/>
-        <path class="map-road" d="M90 20 Q 120 130 100 300"/>
-        <path class="map-road" d="M300 15 Q 280 140 330 305"/>
-        <g class="permits">
-          <circle cx="70" cy="80" r="6"/><circle cx="150" cy="55" r="6"/><circle cx="205" cy="120" r="6"/>
-          <circle cx="120" cy="180" r="6"/><circle cx="280" cy="70" r="6"/><circle cx="350" cy="130" r="6"/>
-          <circle cx="395" cy="70" r="6"/><circle cx="255" cy="185" r="6"/><circle cx="180" cy="255" r="6"/>
-          <circle cx="330" cy="235" r="6"/><circle cx="60" cy="285" r="6"/>
-          <circle cx="415" cy="255" r="6"/><circle cx="240" cy="285" r="6"/>
-        </g>
-        <circle class="you" cx="230" cy="160" r="9"/>
-        <circle class="you-pulse" cx="230" cy="160" r="9"/>
-      </svg>
-      <div class="map-tip">
-        <b>14 permits nearby</b>
-        <span>median job: $1,050</span>
-      </div>
-    </div>
-    <div class="data-copy">
-      <p class="eyebrow reveal">The data</p>
-      <h2 class="reveal">Priced against public records, not opinions</h2>
-      <p class="reveal">Every city keeps permit records. Every state keeps license rolls. Almost nobody reads them. Contrax does — so your report says what similar jobs <em>actually cost</em> on your street, whether the contractor's license is current, and what complaints are on file.</p>
-      <p class="reveal">No pay-to-play rankings. Contractors can't buy their way into a better verdict, because they aren't our customer. You are.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FAMILY PLAN ============ -->
-<section class="section section-dark" id="family">
-  <div class="wrap family-grid">
-    <div>
-      <p class="eyebrow reveal">Family plan</p>
-      <h2 class="reveal">Look out for your parents from anywhere</h2>
-      <p class="reveal">The people most targeted by overpriced quotes are the least likely to question them. Add your parents to your plan: when Mom photographs a quote, everyone on the plan can see the report — and you get a heads-up before anything gets signed.</p>
-    </div>
-    <div class="phone-alert reveal" aria-hidden="true">
-      <div class="alert-card">
-        <div class="alert-dot"></div>
-        <div>
-          <b>Contrax alert</b>
-          <p>Margaret checked a $2,000 plumbing quote — it's above local range. View the report before she signs.</p>
-        </div>
       </div>
     </div>
   </div>
@@ -228,41 +186,33 @@
 <section class="section" id="pricing">
   <div class="wrap">
     <p class="eyebrow reveal">Pricing</p>
-    <h2 class="reveal">Cheaper than getting it wrong</h2>
-    <div class="plans">
+    <h2 class="reveal">Free to find out. $19 to fight back.</h2>
+    <div class="plans two">
       <article class="plan reveal">
-        <h3>Single report</h3>
-        <p class="price">$19</p>
-        <p class="per">per quote</p>
+        <h3>Free scan</h3>
+        <p class="price">$0</p>
+        <p class="per">every quote, always</p>
         <ul>
-          <li>Full verdict &amp; red flags</li>
-          <li>License &amp; complaint check</li>
-          <li>Ready-to-send counter-offer</li>
+          <li>Red flags in the fine print</li>
+          <li>Deposit &amp; scope check</li>
+          <li>License number check</li>
+          <li>No account, no card</li>
         </ul>
-        <a class="btn btn-ghost" href="check.html">Check one quote</a>
+        <a class="btn btn-ghost" href="check.html">Scan my quote</a>
       </article>
       <article class="plan plan-featured reveal">
-        <span class="plan-badge">Most popular</span>
-        <h3>Compare three</h3>
-        <p class="price">$49</p>
-        <p class="per">three quotes, one job</p>
+        <span class="plan-badge">Pays for itself</span>
+        <h3>Full report</h3>
+        <p class="price">$19</p>
+        <p class="per">per quote · refunded if it doesn't help</p>
         <ul>
-          <li>Everything in Single</li>
-          <li>Side-by-side comparison</li>
-          <li>Best-choice recommendation</li>
+          <li>Everything in the free scan</li>
+          <li>Fair price range for your zip</li>
+          <li>License &amp; complaint background check</li>
+          <li>Ready-to-send counter-offer</li>
+          <li>Negotiation coach until it's settled</li>
         </ul>
-        <a class="btn btn-solid" href="check.html">Compare quotes</a>
-      </article>
-      <article class="plan reveal">
-        <h3>Family plan</h3>
-        <p class="price">$99</p>
-        <p class="per">per year, up to 5 people</p>
-        <ul>
-          <li>Unlimited reports</li>
-          <li>Shared with your parents</li>
-          <li>Alerts before they sign</li>
-        </ul>
-        <a class="btn btn-ghost" href="#join">Protect the family</a>
+        <a class="btn btn-solid" href="check.html">Start with the free scan</a>
       </article>
     </div>
   </div>
@@ -274,38 +224,21 @@
     <p class="eyebrow reveal">Questions</p>
     <h2 class="reveal">Fair questions</h2>
     <details class="faq reveal">
+      <summary>Is the scan really free?</summary>
+      <p>Yes. Every quote gets a free scan for red flags — no account, no card. You only pay if you want the full report: the fair local price, the contractor background check, and the counter-offer.</p>
+    </details>
+    <details class="faq reveal">
       <summary>Where do your price ranges come from?</summary>
-      <p>Municipal permit filings near your zip code, published regional cost data, and quotes analyzed on Contrax. Every range in your report is labeled with its source and a confidence level — when the data is thin, we say so instead of guessing.</p>
+      <p>Published regional cost data, public permit records near your zip code, and quotes analyzed on Contrax. Every range is labeled with its source and a confidence level — when the data is thin, we say so instead of guessing.</p>
+    </details>
+    <details class="faq reveal">
+      <summary>Do contractors pay to look good on Contrax?</summary>
+      <p>No, and they never will. Contractors aren't our customer — you are. Verdicts come from public records and the document itself, not sponsorships.</p>
     </details>
     <details class="faq reveal">
       <summary>Is this legal advice?</summary>
       <p>No. Contrax gives you pricing information and negotiation help, not legal or professional advice. For contract disputes, talk to a lawyer.</p>
     </details>
-    <details class="faq reveal">
-      <summary>Do contractors pay to be recommended?</summary>
-      <p>No, and they never will. Contractors aren't our customer — you are. Verdicts are built from public records and document analysis, not sponsorships.</p>
-    </details>
-    <details class="faq reveal">
-      <summary>What if the quote is actually fair?</summary>
-      <p>Then we tell you that, plainly — and you sign with confidence instead of doubt. "This is a fair price, here's why" is just as valuable as catching a bad one.</p>
-    </details>
-    <details class="faq reveal">
-      <summary>What trades do you cover?</summary>
-      <p>Plumbing, HVAC, and roofing at launch — the highest-ticket, highest-risk jobs. More trades as our data earns the right to judge them.</p>
-    </details>
-  </div>
-</section>
-
-<!-- ============ JOIN ============ -->
-<section class="section join" id="join">
-  <div class="wrap wrap-narrow join-inner">
-    <h2 class="reveal">Get the upper hand</h2>
-    <p class="reveal">Contrax is opening city by city. Leave your email and we'll let you in when your area goes live.</p>
-    <form class="join-form reveal" id="joinForm" novalidate>
-      <input type="email" name="email" id="joinEmail" placeholder="you@example.com" required aria-label="Email address">
-      <button class="btn btn-solid" type="submit">Join the list</button>
-    </form>
-    <p class="join-done" id="joinDone" hidden>You're on the list. We'll email you when your city opens.</p>
   </div>
 </section>
 

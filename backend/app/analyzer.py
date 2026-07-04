@@ -262,16 +262,36 @@ def compose(client, extraction, rule_flags, research_text, zip_code, trade) -> d
     return json.loads(_text_of(resp))
 
 
-def analyze(file_bytes, file_mime, quote_text, zip_code, trade) -> dict:
+def scan(file_bytes, file_mime, quote_text, trade) -> dict:
+    """Free tier: extract the document and run deterministic red-flag rules. No research."""
+    if settings.mock_analysis:
+        extraction = {
+            "contractor_name": "Anderson Plumbing Co.", "license_number": None,
+            "total_amount": 2000, "deposit_percent": 50,
+            "line_items": [
+                {"description": "Repair leak, upstairs bath", "amount": 1400},
+                {"description": "Materials, as needed", "amount": 600},
+            ],
+            "scope_vague": True, "has_timeline": False, "has_permit_line": False,
+            "pressure_language": True, "summary": "Leak repair quote (mock)",
+        }
+    else:
+        client = _client()
+        extraction = extract(client, file_bytes, file_mime, quote_text, trade)
+        log.info("scan extraction done: contractor=%s total=%s",
+                 extraction.get("contractor_name"), extraction.get("total_amount"))
+    return {"extraction": extraction, "flags": rules.evaluate(extraction)}
+
+
+def analyze_full(scan_data: dict, zip_code: str, trade: str) -> dict:
+    """Paid tier: research the contractor + local prices, compose the full report."""
     if settings.mock_analysis:
         return _mock_report()
     client = _client()
-    extraction = extract(client, file_bytes, file_mime, quote_text, trade)
-    log.info("extraction done: contractor=%s total=%s", extraction.get("contractor_name"), extraction.get("total_amount"))
-    rule_flags = rules.evaluate(extraction)
+    extraction = scan_data["extraction"]
     research_text = research(client, extraction, zip_code, trade)
     log.info("research done (%d chars)", len(research_text))
-    report = compose(client, extraction, rule_flags, research_text, zip_code, trade)
+    report = compose(client, extraction, scan_data["flags"], research_text, zip_code, trade)
     report["extraction"] = extraction
     return report
 

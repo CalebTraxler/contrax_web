@@ -32,8 +32,8 @@
 <main class="section">
   <div class="wrap wrap-narrow">
     <p class="eyebrow">Check a quote</p>
-    <h2>Send us the quote, get the verdict</h2>
-    <p style="color:var(--ink-soft);margin-bottom:34px">A photo, a PDF, or the text of a text message — however it reached you.</p>
+    <h2>Get your free scan</h2>
+    <p style="color:var(--ink-soft);margin-bottom:34px">A photo, a PDF, or the text of a text message — however it reached you. Red flags in ~30 seconds, free. No account needed.</p>
     <form class="form-card" id="quoteForm">
       <div class="drop" id="drop" tabindex="0">Tap to add a photo or PDF of the quote</div>
       <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" hidden>
@@ -52,7 +52,7 @@
       <label for="email">Email (for your report link)</label>
       <input type="email" id="email" placeholder="you@example.com">
       <p class="form-err" id="err"></p>
-      <button class="btn btn-solid" type="submit" id="submitBtn" style="width:100%;margin-top:22px">Analyze my quote</button>
+      <button class="btn btn-solid" type="submit" id="submitBtn" style="width:100%;margin-top:22px">Scan my quote — free</button>
     </form>
   </div>
 </main>
@@ -82,7 +82,7 @@
       else window.location = "report.html?id=" + data.report_id;
     } catch (ex) {
       err.textContent = ex.message; err.style.display = "block";
-      btn.disabled = false; btn.textContent = "Analyze my quote";
+      btn.disabled = false; btn.textContent = "Scan my quote — free";
     }
   });
 })();

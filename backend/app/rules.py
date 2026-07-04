@@ -7,7 +7,7 @@ def evaluate(extraction: dict) -> list[dict]:
 
     deposit = extraction.get("deposit_percent")
     if isinstance(deposit, (int, float)):
-        if deposit > 50:
+        if deposit >= 50:
             flags.append(_flag(
                 "Deposit over 50%",
                 f"This quote asks for {deposit:.0f}% up front. Standard is 10-30%; "

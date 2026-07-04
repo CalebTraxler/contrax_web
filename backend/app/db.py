@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS reports (
     file_mime TEXT,
     stripe_session_id TEXT,
     paid_at TEXT,
+    scan_json TEXT,
     report_json TEXT,
     error TEXT
 );

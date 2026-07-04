@@ -23,30 +23,39 @@ EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 TRADES = {"plumbing", "hvac", "roofing", "electrical", "other"}
 
 
-def _run_analysis(report_id: str):
+def _run_scan(report_id: str):
     row = db.get_report(report_id)
-    if not row or row["status"] not in ("queued", "processing"):
+    if not row or row["status"] != "scanning":
         return
-    db.update_report(report_id, status="processing")
     file_bytes = None
     if row["file_name"]:
         path = UPLOADS_DIR / report_id
         if path.exists():
             file_bytes = path.read_bytes()
     try:
-        report = analyzer.analyze(
-            file_bytes, row["file_mime"], row["quote_text"], row["zip_code"], row["trade"]
-        )
-        db.set_report_result(report_id, report)
-        log.info("report %s complete", report_id)
+        scan = analyzer.scan(file_bytes, row["file_mime"], row["quote_text"], row["trade"])
+        db.update_report(report_id, scan_json=json.dumps(scan), status="scanned")
+        log.info("report %s scanned (%d flags)", report_id, len(scan["flags"]))
     except Exception as e:
-        log.exception("report %s failed", report_id)
+        log.exception("report %s scan failed", report_id)
         db.set_report_failed(report_id, str(e))
 
 
-def _start_analysis(report_id: str):
-    db.update_report(report_id, status="queued")
-    threading.Thread(target=_run_analysis, args=(report_id,), daemon=True).start()
+def _run_full(report_id: str):
+    row = db.get_report(report_id)
+    if not row or row["status"] != "processing" or not row["scan_json"]:
+        return
+    try:
+        report = analyzer.analyze_full(json.loads(row["scan_json"]), row["zip_code"], row["trade"])
+        db.set_report_result(report_id, report)
+        log.info("report %s complete", report_id)
+    except Exception as e:
+        log.exception("report %s full analysis failed", report_id)
+        db.set_report_failed(report_id, str(e))
+
+
+def _start(target, report_id: str):
+    threading.Thread(target=target, args=(report_id,), daemon=True).start()
 
 
 @app.get("/api/health")
@@ -100,18 +109,32 @@ async def create_quote(
         quote_text.strip() or None,
         file.filename if file else None,
         file.content_type if file else None,
-        status="pending_payment",
+        status="scanning",
     )
+    _start(_run_scan, report_id)
+    return {"report_id": report_id, "status": "scanning"}
+
+
+@app.post("/api/reports/{report_id}/unlock")
+def unlock(report_id: str):
+    row = db.get_report(report_id)
+    if not row:
+        raise HTTPException(404, "Report not found")
+    if row["status"] == "complete":
+        return {"status": "complete"}
+    if row["status"] != "scanned":
+        raise HTTPException(409, "The free scan hasn't finished yet")
 
     if settings.skip_payments:
-        _start_analysis(report_id)
-        return {"report_id": report_id, "status": "queued", "checkout_url": None}
+        db.update_report(report_id, status="processing")
+        _start(_run_full, report_id)
+        return {"status": "processing"}
 
     try:
-        checkout_url = payments.create_checkout(report_id, email or None)
+        checkout_url = payments.create_checkout(report_id, row["email"])
     except payments.PaymentsError as e:
         raise HTTPException(503, str(e))
-    return {"report_id": report_id, "status": "pending_payment", "checkout_url": checkout_url}
+    return {"status": "pending_payment", "checkout_url": checkout_url}
 
 
 @app.post("/api/stripe/webhook")
@@ -127,9 +150,11 @@ async def stripe_webhook(request: Request):
         session = event["data"]["object"]
         report_id = (session.get("metadata") or {}).get("report_id")
         row = db.get_report(report_id) if report_id else None
-        if row and row["status"] == "pending_payment":
-            db.update_report(report_id, paid_at=db.now(), stripe_session_id=session.get("id"))
-            _start_analysis(report_id)
+        if row and row["status"] == "scanned":
+            db.update_report(
+                report_id, paid_at=db.now(), stripe_session_id=session.get("id"), status="processing"
+            )
+            _start(_run_full, report_id)
             log.info("report %s paid via %s", report_id, session.get("id"))
     return {"received": True}
 
@@ -162,6 +187,8 @@ def get_report(report_id: str):
         "trade": row["trade"],
         "created_at": row["created_at"],
     }
+    if row["status"] in ("scanned", "processing") and row["scan_json"]:
+        out["scan"] = {"flags": json.loads(row["scan_json"])["flags"]}
     if row["status"] == "complete" and row["report_json"]:
         report = json.loads(row["report_json"])
         report.pop("extraction", None)

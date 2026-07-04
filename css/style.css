@@ -144,6 +144,11 @@ h3{font-size:1.3rem}
   font-size:.76rem;color:var(--ink-soft);margin:10px 0 8px;
 }
 .mini-send{font-size:.72rem;font-weight:600;color:var(--green)}
+.mini-lock{border-top:1px dashed var(--line);margin-top:9px;padding-top:9px}
+.blur{filter:blur(3.5px);user-select:none}
+.mini-lock-note{font-size:.7rem;font-weight:600;color:var(--ink);margin-top:7px;padding-left:15px;position:relative}
+.mini-lock-note::before{content:"";position:absolute;left:1px;top:3px;width:8px;height:7px;border:1.6px solid var(--ink);border-bottom:none;border-radius:3px 3px 0 0}
+.mini-lock-note::after{content:"";position:absolute;left:-1px;top:8px;width:12px;height:7px;background:var(--amber);border-radius:2px}
 
 /* ---------- ticker ---------- */
 .ticker{
@@ -273,6 +278,7 @@ h3{font-size:1.3rem}
 
 /* ---------- pricing ---------- */
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:44px;align-items:start}
+.plans.two{grid-template-columns:repeat(2,1fr);max-width:780px;margin-left:auto;margin-right:auto}
 .plan{
   background:var(--paper-2);border:1px solid var(--line-soft);border-radius:var(--radius);
   padding:34px 30px;text-align:center;position:relative;

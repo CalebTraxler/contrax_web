@@ -17,7 +17,7 @@
 .rp-card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:30px;margin-bottom:22px}
 .rp-verdict{display:flex;gap:10px;align-items:center;font-weight:600;padding:13px 16px;border-radius:9px;margin-bottom:20px}
 .rp-verdict.fair{background:#E4EFE0;color:#2C5B27}
-.rp-verdict.negotiate{background:var(--flag-soft);color:#8A3421}
+.rp-verdict.negotiate,.rp-verdict.scan{background:var(--flag-soft);color:#8A3421}
 .rp-verdict.caution{background:#F6DAD3;color:#8A2413}
 .rp-flag{padding:12px 0;border-bottom:1px dashed var(--line-soft)}
 .rp-flag b{font-size:.95rem}
@@ -26,21 +26,26 @@
 .rp-flag p{font-size:.9rem;color:var(--ink-soft);margin-top:3px}
 .rp-src{font-size:.78rem;color:var(--ink-faint)}
 .rp-msg{background:var(--paper);border-radius:10px;padding:16px;font-size:.93rem;color:var(--ink-soft);margin:12px 0 14px}
+.rp-locked{position:relative;overflow:hidden}
+.rp-blur{filter:blur(6px);user-select:none;pointer-events:none;opacity:.75}
+.rp-lockover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:24px;background:rgba(255,253,247,.55)}
+.rp-lockover p{font-size:.95rem;color:var(--ink-soft);max-width:30em}
+.rp-lockover b{color:var(--ink)}
 h3{margin-bottom:8px}
 </style>
 </head>
 <body>
 <header class="site-head">
   <div class="wrap head-row">
-    <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path class="m-roof" d="M16 50 52 14 74 36"/><rect class="m-ink" x="28" y="18" width="9" height="13"/><g class="m-win" transform="rotate(-45 52 50)"><rect x="40" y="38" width="11" height="11"/><rect x="54" y="38" width="11" height="11"/><rect x="40" y="52" width="11" height="11"/><rect x="54" y="52" width="11" height="11"/></g><path class="m-check" d="M28 62 52 86 90 44"/></svg><span>Contrax</span></a>
+    <a class="brand" href="index.html" aria-label="Contrax home"><svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path class="m-roof" d="M16 50 52 14 74 36"/><rect class="m-ink" x="28" y="18" width="9" height="13"/><g class="m-win" transform="rotate(-45 52 50)"><rect x="40" y="38" width="11" height="11"/><rect x="54" y="38" width="11" height="11"/><rect x="40" y="52" width="11" height="11"/><rect x="54" y="52" width="11" height="11"/></g><path class="m-check" d="M28 62 52 86 90 44"/></svg><span>Contrax</span></a>
   </div>
 </header>
 <main class="section">
   <div class="wrap report-page" id="root">
-    <div class="pending" id="pending">
+    <div class="pending">
       <div class="spinner" aria-hidden="true"></div>
-      <h3>Analyzing your quote</h3>
-      <p style="color:var(--ink-soft)">Reading the document, checking public records, and pricing the job. This usually takes a minute or two — you can leave this page open.</p>
+      <h3 id="pendTitle">Scanning your quote — free</h3>
+      <p id="pendBody" style="color:var(--ink-soft)">Reading the document and checking the fine print for red flags. About 30 seconds.</p>
     </div>
   </div>
 </main>
@@ -51,11 +56,57 @@ h3{margin-bottom:8px}
   if (!id) { root.innerHTML = "<p>Missing report id.</p>"; return; }
   function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : String(s); return d.innerHTML; }
   function money(n) { return n == null ? "—" : "$" + Number(n).toLocaleString(); }
-
-  function render(r) {
-    var flags = r.red_flags.map(function (f) {
+  function flagsHtml(flags) {
+    return flags.map(function (f) {
       return '<div class="rp-flag ' + esc(f.severity) + '"><b>' + esc(f.title) + '</b><p>' + esc(f.detail) + '</p></div>';
     }).join("");
+  }
+  function setPending(title, body) {
+    var t = document.getElementById("pendTitle"), b = document.getElementById("pendBody");
+    if (t) { t.textContent = title; b.textContent = body; }
+    else {
+      root.innerHTML = '<div class="pending"><div class="spinner" aria-hidden="true"></div><h3 id="pendTitle">' + esc(title) + '</h3><p id="pendBody" style="color:var(--ink-soft)">' + esc(body) + "</p></div>";
+    }
+  }
+
+  /* ---- free scan view: flags free, the rest locked ---- */
+  function renderScan(scan) {
+    var n = scan.flags.length;
+    var headline = n === 0 ? "No red flags in the fine print" : n + " red flag" + (n > 1 ? "s" : "") + " found — free scan";
+    root.innerHTML =
+      '<p class="eyebrow">Free scan results</p>' +
+      '<div class="rp-card"><div class="rp-verdict ' + (n === 0 ? "fair" : "scan") + '">' + esc(headline) + "</div>" +
+        flagsHtml(scan.flags) +
+        '<p class="rp-src" style="margin-top:14px">Found by document analysis — free, every time.</p></div>' +
+      '<div class="rp-card rp-locked"><div class="rp-blur">' +
+        "<h3>Fair price for your area</h3><p>Their quote: $2,000 · Local range: $650–$1,100 based on nearby jobs and published prices…</p>" +
+        "<h3 style=\"margin-top:18px\">Contractor background</h3><p>License status, complaint history, and reviews from public records…</p>" +
+        "<h3 style=\"margin-top:18px\">Your counter-offer</h3><p>Hi — thanks for the quote. Comparable repairs in this area run…</p>" +
+      "</div>" +
+      '<div class="rp-lockover">' +
+        "<p><b>Unlock the full report.</b> The fair price for your zip code, the contractor's license &amp; complaint check, the exact reply to send — and a negotiation coach until it's settled.</p>" +
+        '<button class="btn btn-solid" id="unlockBtn" type="button">Unlock full report — $19</button>' +
+        '<p class="rp-src">Refunded if it doesn\'t help you.</p>' +
+      "</div></div>" +
+      '<p class="rp-src">Contrax provides pricing information, not legal or professional advice.</p>';
+    document.getElementById("unlockBtn").addEventListener("click", async function () {
+      this.disabled = true; this.textContent = "One moment…";
+      try {
+        var res = await fetch("/api/reports/" + encodeURIComponent(id) + "/unlock", { method: "POST" });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.detail || "Something went wrong");
+        if (data.checkout_url) { window.location = data.checkout_url; return; }
+        setPending("Building your full report", "Checking the contractor's records and local prices. Usually a minute or two.");
+        setTimeout(poll, 2500);
+      } catch (ex) {
+        this.disabled = false; this.textContent = "Unlock full report — $19";
+        alert(ex.message);
+      }
+    });
+  }
+
+  /* ---- full report view ---- */
+  function render(r) {
     var findings = r.research_findings.map(function (f) {
       return '<div class="rp-flag"><p>' + esc(f.finding) + ' <span class="rp-src">— ' + esc(f.source) + '</span></p></div>';
     }).join("");
@@ -68,10 +119,10 @@ h3{margin-bottom:8px}
         money(r.local_range_low) + "–" + money(r.local_range_high) +
         ' <span class="rp-src">(confidence: ' + esc(r.price_confidence) + ")</span></p>" +
         '<p class="rp-src" style="margin-top:6px">' + esc(r.price_basis) + "</p></div>" +
-      '<div class="rp-card"><h3>Red flags</h3>' + (flags || "<p>None found.</p>") + "</div>" +
+      '<div class="rp-card"><h3>Red flags</h3>' + (flagsHtml(r.red_flags) || "<p>None found.</p>") + "</div>" +
       '<div class="rp-card"><h3>What we found researching the contractor</h3>' + (findings || "<p>Nothing verifiable found.</p>") + "</div>" +
       '<div class="rp-card"><h3>Your counter-offer, ready to send</h3>' +
-        '<div class="rp-msg" id="msg">' + esc(r.counter_offer_message) + "</div>" +
+        '<div class="rp-msg">' + esc(r.counter_offer_message) + "</div>" +
         '<button class="btn btn-small" id="copyBtn" type="button">Copy message</button></div>' +
       '<div class="rp-card"><h3>Questions to ask before signing</h3><ul style="padding-left:20px;color:var(--ink-soft)">' + qs + "</ul></div>" +
       '<div class="rp-card"><h3>Contractor pushed back?</h3>' +
@@ -118,12 +169,13 @@ h3{margin-bottom:8px}
       var data = await res.json();
       if (!res.ok) throw new Error(data.detail || "Report not found");
       if (data.status === "complete") { render(data.report); return; }
+      if (data.status === "scanned") { renderScan(data.scan); return; }
       if (data.status === "failed") {
         root.innerHTML = '<div class="pending"><h3>Analysis failed</h3><p style="color:var(--ink-soft)">' + esc(data.error) + "</p></div>";
         return;
       }
-      if (data.status === "pending_payment") {
-        document.querySelector("#pending h3").textContent = "Waiting for payment";
+      if (data.status === "processing") {
+        setPending("Building your full report", "Checking the contractor's records and local prices. Usually a minute or two.");
       }
       setTimeout(poll, 3000);
     } catch (ex) {

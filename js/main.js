@@ -54,6 +54,7 @@
   var emailInput = document.getElementById("joinEmail");
   var cfg = window.CONTRAX_CONFIG || {};
 
+  if (!form) return;
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var email = emailInput.value.trim();
