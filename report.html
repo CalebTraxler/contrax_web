@@ -85,8 +85,8 @@ h3{margin-bottom:8px}
       "</div>" +
       '<div class="rp-lockover">' +
         "<p><b>Unlock the full report.</b> The fair price for your zip code, the contractor's license &amp; complaint check, the exact reply to send — and a negotiation coach until it's settled.</p>" +
-        '<button class="btn btn-solid" id="unlockBtn" type="button">Unlock full report — $19</button>' +
-        '<p class="rp-src">Refunded if it doesn\'t help you.</p>' +
+        '<button class="btn btn-solid" id="unlockBtn" type="button">Unlock full report — free during launch</button>' +
+        '<p class="rp-src">Free while we grow. Sponsors never touch verdicts.</p>' +
       "</div></div>" +
       '<p class="rp-src">Contrax provides pricing information, not legal or professional advice.</p>';
     document.getElementById("unlockBtn").addEventListener("click", async function () {
@@ -99,7 +99,7 @@ h3{margin-bottom:8px}
         setPending("Building your full report", "Checking the contractor's records and local prices. Usually a minute or two.");
         setTimeout(poll, 2500);
       } catch (ex) {
-        this.disabled = false; this.textContent = "Unlock full report — $19";
+        this.disabled = false; this.textContent = "Unlock full report — free during launch";
         alert(ex.message);
       }
     });

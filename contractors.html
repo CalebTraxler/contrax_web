@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find contractors — Contrax</title>
+<meta name="description" content="Contractors near you, with receipts: license status, complaint history, and price fairness from real analyzed quotes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23F6F2E9'/%3E%3Cpath d='M16 50 52 14 74 36' stroke='%231C2B24' stroke-width='11' fill='none'/%3E%3Crect x='28' y='18' width='9' height='13' fill='%231C2B24'/%3E%3Cg fill='%231C2B24' transform='rotate(-45 52 50)'%3E%3Crect x='40' y='38' width='11' height='11'/%3E%3Crect x='54' y='38' width='11' height='11'/%3E%3Crect x='40' y='52' width='11' height='11'/%3E%3Crect x='54' y='52' width='11' height='11'/%3E%3C/g%3E%3Cpath d='M28 62 52 86 90 44' stroke='%23BE4B33' stroke-width='12' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.search-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.search-row input,.search-row select{
+  font-family:var(--font-body);font-size:.95rem;padding:11px 14px;
+  border:1.5px solid var(--line);border-radius:9px;background:var(--paper-2);color:var(--ink);outline:none;
+}
+.search-row input:focus,.search-row select:focus{border-color:var(--green)}
+.search-row input{width:130px}
+.dir-note{font-size:.8rem;color:var(--ink-faint);margin-top:22px}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html" aria-label="Contrax home"><svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path class="m-roof" d="M16 50 52 14 74 36"/><rect class="m-ink" x="28" y="18" width="9" height="13"/><g class="m-win" transform="rotate(-45 52 50)"><rect x="40" y="38" width="11" height="11"/><rect x="54" y="38" width="11" height="11"/><rect x="40" y="52" width="11" height="11"/><rect x="54" y="52" width="11" height="11"/></g><path class="m-check" d="M28 62 52 86 90 44"/></svg><span>Contrax</span></a>
+    <a class="btn btn-solid head-cta" style="margin-left:auto" href="check.html">Scan a quote — free</a>
+  </div>
+</header>
+<main class="section">
+  <div class="wrap" style="max-width:860px">
+    <p class="eyebrow">The directory</p>
+    <h2>Contractors near you, with receipts</h2>
+    <p style="color:var(--ink-soft);max-width:38em">Every business here has a public record — license status, complaint history, and how fairly they price against the quotes Contrax has analyzed. Records can't be bought, edited, or hidden.</p>
+    <form class="search-row" id="searchForm">
+      <input type="text" id="zip" inputmode="numeric" maxlength="5" placeholder="Zip (e.g. 67202)" aria-label="Zip code">
+      <select id="trade" aria-label="Trade">
+        <option value="">All trades</option>
+        <option value="plumbing">Plumbing</option>
+        <option value="hvac">HVAC</option>
+        <option value="roofing">Roofing</option>
+        <option value="electrical">Electrical</option>
+      </select>
+      <button class="btn btn-solid btn-small" type="submit">Search</button>
+    </form>
+    <div class="dir-grid" id="results"><p style="color:var(--ink-soft)">Loading…</p></div>
+    <p class="dir-note">Sponsored placement is always labeled. It buys visibility — never a better record. Demo data shown during launch.</p>
+  </div>
+</main>
+<script>
+(function () {
+  var results = document.getElementById("results");
+  var TRADES = { plumbing: "Plumbing", hvac: "HVAC", roofing: "Roofing", electrical: "Electrical", other: "Other" };
+  function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : String(s); return d.innerHTML; }
+
+  function card(c) {
+    var badges = "";
+    badges += c.license_status === "verified"
+      ? '<span class="badge good">License verified</span>'
+      : '<span class="badge warn">No license on file</span>';
+    badges += c.complaints_3yr > 0
+      ? '<span class="badge warn">' + c.complaints_3yr + " complaint" + (c.complaints_3yr > 1 ? "s" : "") + " (3 yr)</span>"
+      : '<span class="badge good">0 complaints (3 yr)</span>';
+    badges += '<span class="badge neutral">' + c.permits_12mo + " permits (12 mo)</span>";
+    var tier = c.fair_quote_rate >= 80 ? "fair-hi" : c.fair_quote_rate >= 60 ? "fair-mid" : "fair-lo";
+    return '<a class="dir-card' + (c.featured ? " sponsored" : "") + '" href="contractor.html?id=' + esc(c.id) + '">' +
+      (c.featured ? '<span class="spon-chip">Sponsored</span>' : "") +
+      "<div><p class=\"dir-name\">" + esc(c.name) + "</p>" +
+      '<p class="dir-meta">' + esc(TRADES[c.trade] || c.trade) + " · " + esc(c.city) + " · " + c.years + " yrs</p>" +
+      "<div>" + badges + "</div></div>" +
+      '<div class="fair-score ' + tier + '"><b>' + c.fair_quote_rate + "</b><span>fair-quote score</span></div></a>";
+  }
+
+  async function load() {
+    var zip = document.getElementById("zip").value.trim();
+    var trade = document.getElementById("trade").value;
+    var qs = [];
+    if (zip) qs.push("zip_code=" + encodeURIComponent(zip));
+    if (trade) qs.push("trade=" + encodeURIComponent(trade));
+    try {
+      var res = await fetch("/api/contractors" + (qs.length ? "?" + qs.join("&") : ""));
+      var data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Search failed");
+      results.innerHTML = data.contractors.length
+        ? data.contractors.map(card).join("")
+        : '<p style="color:var(--ink-soft)">No contractors on file here yet — we\'re opening city by city.</p>';
+    } catch (ex) {
+      results.innerHTML = '<p style="color:#BE4B33">' + esc(ex.message) + "</p>";
+    }
+  }
+  document.getElementById("searchForm").addEventListener("submit", function (e) { e.preventDefault(); load(); });
+  load();
+})();
+</script>
+</body>
+</html>

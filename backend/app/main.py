@@ -17,6 +17,7 @@ log = logging.getLogger("contrax")
 
 app = FastAPI(title="Contrax API")
 db.init_db()
+db.seed_contractors_if_empty()
 
 MAX_UPLOAD_BYTES = 20 * 1024 * 1024
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
@@ -196,6 +197,41 @@ def get_report(report_id: str):
     if row["status"] == "failed":
         out["error"] = "Analysis failed. You have not been charged for a failed report — contact support."
     return JSONResponse(out)
+
+
+@app.get("/api/contractors")
+def contractors(zip_code: str = "", trade: str = ""):
+    zip_code = zip_code.strip()
+    if zip_code and not re.match(r"^\d{3,5}$", zip_code):
+        raise HTTPException(422, "zip_code must be 3-5 digits")
+    if trade and trade not in TRADES:
+        raise HTTPException(422, f"trade must be one of {sorted(TRADES)}")
+    return {"contractors": db.list_contractors(zip_code[:3], trade)}
+
+
+@app.get("/api/contractors/{cid}")
+def contractor(cid: str):
+    row = db.get_contractor(cid)
+    if not row:
+        raise HTTPException(404, "Contractor not found")
+    return row
+
+
+@app.post("/api/contractors/{cid}/contact")
+def contact_contractor(cid: str, payload: dict):
+    if not db.get_contractor(cid):
+        raise HTTPException(404, "Contractor not found")
+    name = (payload.get("name") or "").strip()
+    email = (payload.get("email") or "").strip().lower()
+    message = (payload.get("message") or "").strip()
+    if not name or len(name) > 200:
+        raise HTTPException(422, "Name is required")
+    if not EMAIL_RE.match(email):
+        raise HTTPException(422, "Invalid email address")
+    if len(message) > 4000:
+        raise HTTPException(422, "Message too long")
+    db.add_lead(cid, name, email, message)
+    return {"ok": True}
 
 
 # Static frontend — mounted last so /api/* wins.

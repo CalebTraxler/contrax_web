@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contractor record — Contrax</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23F6F2E9'/%3E%3Cpath d='M16 50 52 14 74 36' stroke='%231C2B24' stroke-width='11' fill='none'/%3E%3Crect x='28' y='18' width='9' height='13' fill='%231C2B24'/%3E%3Cg fill='%231C2B24' transform='rotate(-45 52 50)'%3E%3Crect x='40' y='38' width='11' height='11'/%3E%3Crect x='54' y='38' width='11' height='11'/%3E%3Crect x='40' y='52' width='11' height='11'/%3E%3Crect x='54' y='52' width='11' height='11'/%3E%3C/g%3E%3Cpath d='M28 62 52 86 90 44' stroke='%23BE4B33' stroke-width='12' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.rec-card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:30px;margin-bottom:22px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.stat{background:var(--paper);border-radius:9px;padding:14px 16px}
+.stat b{display:block;font-family:var(--font-display);font-size:1.35rem;font-weight:600}
+.stat span{font-size:.72rem;color:var(--ink-faint);letter-spacing:.05em;text-transform:uppercase}
+.contact-form label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 6px}
+.contact-form input,.contact-form textarea{
+  width:100%;font-family:var(--font-body);font-size:.93rem;padding:10px 13px;
+  border:1.5px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);outline:none;
+}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--green)}
+.contact-form textarea{min-height:90px;resize:vertical}
+@media(max-width:640px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html" aria-label="Contrax home"><svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path class="m-roof" d="M16 50 52 14 74 36"/><rect class="m-ink" x="28" y="18" width="9" height="13"/><g class="m-win" transform="rotate(-45 52 50)"><rect x="40" y="38" width="11" height="11"/><rect x="54" y="38" width="11" height="11"/><rect x="40" y="52" width="11" height="11"/><rect x="54" y="52" width="11" height="11"/></g><path class="m-check" d="M28 62 52 86 90 44"/></svg><span>Contrax</span></a>
+    <a class="btn btn-ghost head-cta" style="margin-left:auto" href="contractors.html">&larr; Directory</a>
+  </div>
+</header>
+<main class="section">
+  <div class="wrap" style="max-width:760px" id="root">
+    <p style="color:var(--ink-soft)">Loading record…</p>
+  </div>
+</main>
+<script>
+(function () {
+  var id = new URLSearchParams(location.search).get("id");
+  var root = document.getElementById("root");
+  if (!id) { root.innerHTML = "<p>Missing contractor id.</p>"; return; }
+  var TRADES = { plumbing: "Plumbing", hvac: "HVAC", roofing: "Roofing", electrical: "Electrical", other: "Other" };
+  function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : String(s); return d.innerHTML; }
+
+  function render(c) {
+    var lic = c.license_status === "verified"
+      ? '<span class="badge good">License verified · ' + esc(c.license_number) + "</span>"
+      : '<span class="badge warn">No license on file</span>';
+    var comp = c.complaints_3yr > 0
+      ? '<span class="badge warn">' + c.complaints_3yr + " complaint" + (c.complaints_3yr > 1 ? "s" : "") + " (3 yr)</span>"
+      : '<span class="badge good">0 complaints (3 yr)</span>';
+    var tier = c.fair_quote_rate >= 80 ? "var(--green)" : c.fair_quote_rate >= 60 ? "var(--amber)" : "var(--flag)";
+    root.innerHTML =
+      '<p class="eyebrow">Contractor record</p>' +
+      "<h2>" + esc(c.name) + (c.featured ? ' <span class="spon-chip" style="position:static;vertical-align:middle;margin-left:8px">Sponsored</span>' : "") + "</h2>" +
+      '<p style="color:var(--ink-faint);margin:-8px 0 14px">' + esc(TRADES[c.trade] || c.trade) + " · " + esc(c.city) + " · " + esc(c.phone) + "</p>" +
+      "<div>" + lic + comp + "</div>" +
+      '<div class="rec-card" style="margin-top:20px"><h3>The Contrax record</h3>' +
+      '<p style="font-size:.85rem;color:var(--ink-faint)">Built from public records and quotes analyzed on Contrax. Cannot be bought, edited, or hidden.</p>' +
+      '<div class="stat-grid">' +
+        '<div class="stat"><b style="color:' + tier + '">' + c.fair_quote_rate + "</b><span>fair-quote score</span></div>" +
+        '<div class="stat"><b>' + c.quotes_analyzed + "</b><span>quotes analyzed</span></div>" +
+        '<div class="stat"><b>' + c.permits_12mo + "</b><span>permits (12 mo)</span></div>" +
+        '<div class="stat"><b>' + c.complaints_3yr + "</b><span>complaints (3 yr)</span></div>" +
+        '<div class="stat"><b>' + c.years + "</b><span>years in business</span></div>" +
+        '<div class="stat"><b>' + (c.license_status === "verified" ? "Active" : "—") + "</b><span>license status</span></div>" +
+      "</div></div>" +
+      '<div class="rec-card"><h3>About</h3><p style="color:var(--ink-soft)">' + esc(c.blurb) + "</p></div>" +
+      '<div class="rec-card"><h3>Request a quote</h3>' +
+      '<p style="font-size:.9rem;color:var(--ink-soft)">Contrax sends your request and keeps the paper trail — so every quote you get back can be scanned for free.</p>' +
+      '<form class="contact-form" id="cf">' +
+        '<label for="cfName">Your name</label><input id="cfName" type="text" required>' +
+        '<label for="cfEmail">Email</label><input id="cfEmail" type="email" required>' +
+        '<label for="cfMsg">What do you need done?</label><textarea id="cfMsg" placeholder="Water heater is leaking from the base…"></textarea>' +
+        '<button class="btn btn-solid btn-small" type="submit" style="margin-top:14px">Send request</button>' +
+        '<p id="cfOut" style="margin-top:12px;font-size:.9rem"></p>' +
+      "</form></div>" +
+      '<p class="rp-src" style="font-size:.78rem;color:var(--ink-faint)">Records reflect public data at the time shown. Demo data during launch.</p>';
+
+    document.getElementById("cf").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var out = document.getElementById("cfOut");
+      try {
+        var res = await fetch("/api/contractors/" + encodeURIComponent(id) + "/contact", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            name: document.getElementById("cfName").value,
+            email: document.getElementById("cfEmail").value,
+            message: document.getElementById("cfMsg").value
+          })
+        });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.detail || "Something went wrong");
+        out.style.color = "var(--green)"; out.textContent = "Request sent. You'll hear back by email — scan any quote they send, free.";
+      } catch (ex) {
+        out.style.color = "#BE4B33"; out.textContent = ex.message;
+      }
+    });
+  }
+
+  fetch("/api/contractors/" + encodeURIComponent(id))
+    .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw new Error(d.detail || "Not found"); render(d); }); })
+    .catch(function (ex) { root.innerHTML = '<p style="color:#BE4B33">' + esc(ex.message) + "</p>"; });
+})();
+</script>
+</body>
+</html>
