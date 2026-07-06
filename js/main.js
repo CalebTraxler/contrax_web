@@ -60,7 +60,7 @@
     var email = emailInput.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       emailInput.focus();
-      emailInput.style.borderColor = "#BE4B33";
+      emailInput.style.borderColor = "#C22F2A";
       return;
     }
     emailInput.style.borderColor = "";
